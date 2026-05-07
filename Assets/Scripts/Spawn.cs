@@ -17,7 +17,7 @@ public class Spawn : MonoBehaviour
 
     private void Update()
     {
-        if(PlayerController.Instance.gameStarted)
+        if(PlayerController.Instance.gameStarted && !GameOver.Instance.IsGameOver)
         {
             timer -= Time.deltaTime;//Contador do intervalo
             if (timer <= 0f)

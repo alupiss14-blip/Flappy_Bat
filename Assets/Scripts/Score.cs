@@ -1,43 +1,64 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
 public class Score : MonoBehaviour
+
+
+{ private float score = 0f;
+[SerializeField] private TextMeshProUGUI scoreText;
+
+//Aumentar a dificuldade
+private int level = 1;
+private float proximoLevel = 10f;
+
+
+public GameObject background;
+public Material[] backgroundMaterials;
+private int ultimoLevel = 1;
+
+void Update()
 {
-
-    private float score = 0f;
-    [SerializeField] private TextMeshProUGUI scoreText;
-
-    //Aumentar a dificuldade
-    private int level = 1;
-    private float proximoLevel = 10f;
-
-   
-
-
-
-   private void Update()
+    if (PlayerController.Instance.gameStarted && !GameOver.Instance.IsGameOver)
     {
-        if(PlayerController.Instance.gameStarted)
+        sistemaPontos();
+
+
+        if (level > ultimoLevel)
         {
-            sistemaPontos();
+            TrocarBackground();
+            ultimoLevel = level;
         }
-
-
     }
-    private void sistemaPontos()
+
+}
+
+private void sistemaPontos()
+{
+    score += Time.deltaTime;
+    scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
+}
+
+public int GanhaLevel()
+{
+    if (score >= proximoLevel)
     {
-        score += Time.deltaTime;
-        scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
+        level++;
+        proximoLevel += 10f;
     }
+    return level;
+}
 
-    public int GanhaLevel()
+private void TrocarBackground()
+{
+    if (backgroundMaterials.Length > (level - 1))
     {
-        if (score >= proximoLevel)
-        {
-            level++;
-            proximoLevel += 10f;
-      
-        }
-        return level;   
+        background.GetComponent<Renderer>().material =
+            backgroundMaterials[level - 1];
     }
+}
+
+
+
 }

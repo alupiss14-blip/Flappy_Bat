@@ -59,4 +59,14 @@ public static PlayerController Instance {  get; private set; }
 
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            GameOver.Instance.MetodoGameOver("GameOver");
+                Destroy(gameObject);
+        }
+    }
+
+
 }

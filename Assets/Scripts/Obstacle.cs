@@ -5,37 +5,34 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private Score scoreScript;
 
+    private int level = 0;
+
     private void Start()
     {
         scoreScript = GameObject.FindGameObjectWithTag("GameController")
-         .GetComponent<Score>();
+        .GetComponent<Score>();
     }
 
-
-      private void Update()
+    private void Update()
     {
-        if (PlayerController.Instance.gameStarted)
+        if (PlayerController.Instance.gameStarted && !GameOver.Instance.IsGameOver)
         {
-            speed = 5f + scoreScript.GanhaLevel();
+            level = scoreScript.GanhaLevel();
+            speed = 5f + level;
 
+            transform.position +=
+                Vector3.left * speed * Time.deltaTime;
 
-           transform.position +=
-             Vector3.left * speed * Time.deltaTime;
-
-            if (transform.position.x < -10)
+            if (transform.position.x < -10f)
             {
                 Destroy(gameObject);
             }
-        }
 
-        transform.position +=
-            Vector3.left * speed * Time.deltaTime;
-
-        if (transform.position.x < -10f)
-        {
-            Destroy(gameObject);
         }
     }
+
+
+
 
 
 
